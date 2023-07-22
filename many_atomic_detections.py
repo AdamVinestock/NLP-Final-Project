@@ -1,3 +1,6 @@
+"Adams code of line"
+
+
 """
 Apply the atomic chunk detector many times.
 This is useful for:
