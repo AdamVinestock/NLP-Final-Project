@@ -140,6 +140,9 @@ def main():
     else:
         device = 'cpu'
     model.to(device)
+    
+    #To delete
+    print(f"Using device {device}")
 
     dataset_name = args.i
     shuffle = args.shuffle
