@@ -25,11 +25,12 @@ class PerplexityEvaluator(object):
             input_ids = torch.concatenate([context_ids['input_ids'], text_ids['input_ids']], axis=1)
             labels = torch.concatenate([torch.ones_like(context_ids['input_ids']) * self.ignore_index,
                                         text_ids['input_ids']], axis=1)
+
+            print(f"label size: {labels.max()})
         else:
             input_ids = text_ids['input_ids']
             labels = input_ids
 
-        print(f"label size: {labels.max()})
 
         loss = self.model(input_ids=input_ids.to(device), labels=labels.to(device)).loss
         return loss.cpu().detach().numpy()
