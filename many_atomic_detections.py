@@ -18,6 +18,7 @@ from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import logging
 import argparse
+import traceback
 from src.PerplexityEvaluator import PerplexityEvaluator
 from src.PrepareSentenceContext import PrepareSentenceContext
 from src.dataset_loaders import (get_text_from_chatgpt_news_dataset,
@@ -64,9 +65,14 @@ def iterate_over_texts(dataset, atomic_detector, parser, output_file):
             r = process_text(d['text'], atomic_detector, parser)
         except KeyboardInterrupt:
             break
-        except:
+        except Exception as e:
             print(f"Error processing {name}")
+            print(f"Error details: {e}")
+            traceback.print_exc()
             continue
+        # except:
+        #     print(f"Error processing {name}")
+        #     continue
         ids += r['chunk_ids']
         responses += r['responses']
         lengths += r['lengths']
