@@ -66,6 +66,7 @@ class PrepareSentenceContext(object):
                 elif self.context_policy is None:
                     context = None
                 elif self.context_policy == 'previous_sentence':
+                    print("Omer")
                     context = previous
                     previous = sent_text
                 else:
