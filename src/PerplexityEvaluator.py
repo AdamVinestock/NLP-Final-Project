@@ -1,7 +1,7 @@
 import torch
 
 class PerplexityEvaluator(object):
-    def __init__(self, model, tokenizer, ignore_index= 1):
+    def __init__(self, model, tokenizer, ignore_index= 50259):
         self.model = model
         self.tokenizer = tokenizer
         self.ignore_index = ignore_index
