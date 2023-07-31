@@ -62,25 +62,21 @@ class PrepareSentenceContext(object):
                 texts.append(sent_text)
 
                 if self.context is not None:
-                    print("Omer1")
                     context = self.context
                 elif self.context_policy is None:
-                    print("Omer2")
                     context = None
                 elif self.context_policy == 'previous_sentence':
-                    print("Omer3")
                     context = previous
                     previous = sent_text
                 else:
-                    print("Omer4")
                     context = None
 
                 contexts.append(context)
 
         # #### to delete
-        # log = {'text': texts, 'length': lengths, 'context': contexts, 'tag': tags,
-        #         'number_in_par': num_in_par}
-        # print(f"parse sentence returns: {log}")
+        log = {'text': texts, 'length': lengths, 'context': contexts, 'tag': tags,
+                 'number_in_par': num_in_par}
+        print(f"parse sentence returns: {log}")
         # #### to delete
 
         return {'text': texts, 'length': lengths, 'context': contexts, 'tag': tags,
