@@ -41,6 +41,8 @@ class PrepareSentenceContext(object):
         # Creating context for entire text chunk
         if self.context_policy == 'summary':
             summary = summarize(parsed.text)
+            print(f"summary type: {type(summary)}")
+            print(f"summary: {summary}")
             if self.context is not None:
                 summary_context = self.context + ' ' + summary
             else:
@@ -91,7 +93,7 @@ class PrepareSentenceContext(object):
                         context = summary_context
                     previous = sent_text
                 else:
-                    context = None
+                    context = self.context
 
                 contexts.append(context)
 
