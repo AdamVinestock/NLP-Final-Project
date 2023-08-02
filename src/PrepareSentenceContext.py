@@ -33,6 +33,7 @@ class PrepareSentenceContext(object):
         tags = []
         num_in_par = []
         previous = None
+        summary_context = None
 
         text = re.sub("(</?[a-zA-Z0-9 ]+>)\s+", r"\1. ", text)  # to make sure that tags are in separate sentences
         parsed = self.nlp(text)
@@ -89,6 +90,8 @@ class PrepareSentenceContext(object):
                     else:
                         context = summary_context
                     previous = sent_text
+                else:
+                    context = None
 
                 contexts.append(context)
 
