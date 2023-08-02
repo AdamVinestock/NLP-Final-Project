@@ -2,6 +2,7 @@ import logging
 import spacy
 import re
 from src.SentenceParser import SentenceParser
+from summarizer import summarize
 
 
 class PrepareSentenceContext(object):
@@ -36,6 +37,14 @@ class PrepareSentenceContext(object):
         text = re.sub("(</?[a-zA-Z0-9 ]+>)\s+", r"\1. ", text)  # to make sure that tags are in separate sentences
         parsed = self.nlp(text)
 
+        # Creating context for entire text chunk
+        if self.context_policy == 'summary':
+            summary = summarize(text)
+            if self.context is not None:
+                summary_context = self.context + ' ' + summary
+            else:
+                summary_context = summary
+
         running_sent_num = 0
         tag = None
         for i, sent in enumerate(parsed.sents):
@@ -61,31 +70,44 @@ class PrepareSentenceContext(object):
                 sent_text = str(sent)
                 texts.append(sent_text)
 
-                # if self.context is not None:
+
+                if self.context_policy == 'previous_sentence':
+                    if self.context:
+                        if previous is not None:
+                            context = self.context + ' ' + previous
+                        else:
+                            context = self.context
+                    else:
+                        context = previous
+                    previous = sent_text
+                elif self.context_policy == 'summary':
+                    context = summary_context
+
+                elif self.context_policy == 'summary_and_previous_sentence':
+                    if previous is not None:
+                        context = summary_context + ' ' + previous
+                    else:
+                        context = summary_context
+                    previous = sent_text
+
+                contexts.append(context)
+
+
+                # if self.context is not None and self.context_policy == 'previous_sentence':
+                #     if previous is not None:
+                #         context = self.context+' '+previous
+                #     else: # if this is the first sentence in the text previous is None, we cannot concat string to None
+                #         context = self.context
+                #     previous = sent_text
+                # elif self.context is not None and self.context_policy is None:
                 #     context = self.context
-                # elif self.context_policy is None:
-                #     context = None
-                # elif self.context_policy == 'previous_sentence':
+                # elif self.context is None and self.context_policy == 'previous_sentence':
                 #     context = previous
                 #     previous = sent_text
                 # else:
                 #     context = None
-
-                if self.context is not None and self.context_policy == 'previous_sentence':
-                    if previous is not None:
-                        context = self.context+' '+previous
-                    else: # if this is the first sentence in the text previous is None, we cannot concat string to None
-                        context = self.context
-                    previous = sent_text
-                elif self.context is not None and self.context_policy is None:
-                    context = self.context
-                elif self.context is None and self.context_policy == 'previous_sentence':
-                    context = previous
-                    previous = sent_text
-                else:
-                    context = None
-
-                contexts.append(context)
+                #
+                # contexts.append(context)
 
         #### to delete
         log = {'text': texts, 'length': lengths, 'context': contexts, 'tag': tags,
