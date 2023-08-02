@@ -28,8 +28,5 @@ class PerplexityEvaluator(object):
         else:
             input_ids = text_ids['input_ids']
             labels = input_ids
-        print(f'input_ids = {input_ids}')
-        print(f'labels = {labels}')
-        print(f' max label = {labels.max()}')
         loss = self.model(input_ids=input_ids.to(device), labels=labels.to(device)).loss
         return loss.cpu().detach().numpy()
