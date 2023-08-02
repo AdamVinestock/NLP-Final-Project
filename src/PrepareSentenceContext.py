@@ -98,12 +98,18 @@ class PrepareSentenceContext(object):
                     else:
                         if i<4:
                             previous_3.append(previous)
-                            context = self.context + ' ' + " ".join(previous_3)
+                            if self.context:
+                                context = self.context + ' ' + " ".join(previous_3)
+                            else:
+                                context = " ".join(previous_3)
                             previous = sent_text
                         else:
                             previous_3.pop(0)
                             previous_3.append(previous)
-                            context = self.context + ' ' + " ".join(previous_3)
+                            if self.context:
+                                context = self.context + ' ' + " ".join(previous_3)
+                            else:
+                                context = " ".join(previous_3)
                             previous = sent_text
                 else:
                     context = self.context
