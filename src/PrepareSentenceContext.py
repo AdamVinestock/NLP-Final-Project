@@ -72,7 +72,11 @@ class PrepareSentenceContext(object):
                 #     context = None
 
                 if self.context is not None and self.context_policy == 'previous_sentence':
-                    context = self.context+' '+previous
+                    if previous is not None:
+                        context = self.context+' '+previous
+                    else: # if this is the first sentence in the text previous is None, we cannot concat string to None
+                        context = self.context
+                    previous = sent_text
                 elif self.context is not None and self.context_policy is None:
                     context = self.context
                 elif self.context is None and self.context_policy == 'previous_sentence':
