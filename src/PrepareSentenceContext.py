@@ -38,8 +38,6 @@ class PrepareSentenceContext(object):
         text = re.sub("(</?[a-zA-Z0-9 ]+>)\s+", r"\1. ", text)  # to make sure that tags are in separate sentences
         parsed = self.nlp(text)
 
-        print(f"parsed.text type: {type(parsed.text)}")
-
         # Creating context for entire text chunk
         if self.context_policy == 'summary':
             summary = summarize(parsed.text)

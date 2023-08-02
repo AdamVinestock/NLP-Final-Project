@@ -9,8 +9,10 @@ summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 # In his tenure as commander, responsible for overseeing cadets' day-to-day life and learning process, Omer implemented several innovative practices and reforms that drastically altered the cadets' experience during their helicopter training stage. Not only did training become more convenient, but performance also improved due to the enhanced tools and practices provided. His impactful changes and reforms have continued to influence the academy long after his departure.
 #
 # """
-
+#
 # print(summarizer(ARTICLE, max_length=130, min_length=30, do_sample=False))
 
 def summarize(text):
-    return summarizer(text, max_length=130, min_length=30, do_sample=False)
+    summarized = summarizer(text, max_length=130, min_length=30, do_sample=False)
+    summary_text = summarized[0]['summary_text']
+    return summary_text
