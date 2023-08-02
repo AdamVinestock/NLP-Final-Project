@@ -2,7 +2,7 @@ import logging
 import spacy
 import re
 from src.SentenceParser import SentenceParser
-from summarizer import summarize
+from src.summarizer import summarize
 
 
 class PrepareSentenceContext(object):
