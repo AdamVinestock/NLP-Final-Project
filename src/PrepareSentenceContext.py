@@ -61,11 +61,21 @@ class PrepareSentenceContext(object):
                 sent_text = str(sent)
                 texts.append(sent_text)
 
-                if self.context is not None:
+                # if self.context is not None:
+                #     context = self.context
+                # elif self.context_policy is None:
+                #     context = None
+                # elif self.context_policy == 'previous_sentence':
+                #     context = previous
+                #     previous = sent_text
+                # else:
+                #     context = None
+
+                if self.context is not None and self.context_policy == 'previous_sentence':
+                    context = self.context+' '+previous
+                elif self.context is not None and self.context_policy is None:
                     context = self.context
-                elif self.context_policy is None:
-                    context = None
-                elif self.context_policy == 'previous_sentence':
+                elif self.context is None and self.context_policy == 'previous_sentence':
                     context = previous
                     previous = sent_text
                 else:
