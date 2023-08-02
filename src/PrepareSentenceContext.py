@@ -99,7 +99,7 @@ class PrepareSentenceContext(object):
                         if i<4:
                             previous_3.append(previous)
                             if self.context:
-                                context = self.context + ' ' + " ".join(previous_3)
+                                context = self.context + ' ' + "".join(previous_3)
                             else:
                                 context = " ".join(previous_3)
                             previous = sent_text
@@ -107,7 +107,7 @@ class PrepareSentenceContext(object):
                             previous_3.pop(0)
                             previous_3.append(previous)
                             if self.context:
-                                context = self.context + ' ' + " ".join(previous_3)
+                                context = self.context + ' ' + "".join(previous_3)
                             else:
                                 context = " ".join(previous_3)
                             previous = sent_text
