@@ -34,6 +34,7 @@ class PrepareSentenceContext(object):
         num_in_par = []
         previous = None
         summary_context = None
+        previous_3 = []
 
         text = re.sub("(</?[a-zA-Z0-9 ]+>)\s+", r"\1. ", text)  # to make sure that tags are in separate sentences
         parsed = self.nlp(text)
@@ -41,8 +42,6 @@ class PrepareSentenceContext(object):
         # Creating context for entire text chunk
         if self.context_policy=='summary' or self.context_policy=='summary_and_previous_sentence':
             summary = summarize(parsed.text)
-            # print(f"summary type: {type(summary)}")
-            # print(f"summary: {summary}")
             if self.context is not None:
                 summary_context = self.context + ' ' + summary
             else:
@@ -92,6 +91,20 @@ class PrepareSentenceContext(object):
                     else:
                         context = summary_context
                     previous = sent_text
+                elif self.context_policy == 'previous_3_sentences':
+                    if i==0:
+                        context = previous # previous will be None
+                        previous = sent_text
+                    else:
+                        if i<3:
+                            previous_3.append(previous)
+                            context = " ".join(previous_3)
+                            previous = sent_text
+                        else:
+                            previous_3.pop(0)
+                            previous_3.append(previous)
+                            context = " ".join(previous_3)
+                            previous = sent_text
                 else:
                     context = self.context
 
