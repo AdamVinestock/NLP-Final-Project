@@ -39,10 +39,10 @@ class PrepareSentenceContext(object):
         parsed = self.nlp(text)
 
         # Creating context for entire text chunk
-        if self.context_policy == 'summary':
+        if self.context_policy=='summary' or self.context_policy=='summary_and_previous_sentence':
             summary = summarize(parsed.text)
-            print(f"summary type: {type(summary)}")
-            print(f"summary: {summary}")
+            # print(f"summary type: {type(summary)}")
+            # print(f"summary: {summary}")
             if self.context is not None:
                 summary_context = self.context + ' ' + summary
             else:
