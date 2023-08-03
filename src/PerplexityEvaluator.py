@@ -30,9 +30,9 @@ class PerplexityEvaluator(object):
             labels = input_ids
         loss = self.model(input_ids=input_ids.to(device), labels=labels.to(device)).loss
 
-        print(f"model float size: {next(model.parameters()).dtype})
+        print(f"model float size: {next(model.parameters()).dtype}")
         print(f"input float size: {input_ids.dtype}")
         print(f"labels float size: {labels.dtype}")
-        
+
 
         return loss.cpu().detach().numpy()
