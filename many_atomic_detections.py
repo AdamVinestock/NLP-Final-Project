@@ -130,8 +130,6 @@ def main_colab(i, o, model_name, context, human, shuffle, describe_datasets):
         device = 'cpu'
     model.to(device)
 
-    #To delete
-    print(f"Using device {device}")
 
     dataset_name = i
 
