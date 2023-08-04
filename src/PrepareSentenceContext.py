@@ -83,11 +83,17 @@ class PrepareSentenceContext(object):
                         context = previous
                     previous = sent_text
                 elif self.context_policy == 'summary':
-                    context = summary_context
+                    if self.context:
+                        context = self.context + ' ' + summary_context
+                    else:
+                        context = summary_context
 
                 elif self.context_policy == 'summary_and_previous_sentence':
                     if previous is not None:
-                        context = summary_context + ' ' + previous
+                        if self.context:
+                            context = self.context + ' ' + summary_context + ' ' + previous
+                        else:
+                            context = summary_context + ' ' + previous
                     else:
                         context = summary_context
                     previous = sent_text
