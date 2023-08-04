@@ -4,9 +4,10 @@ import torch
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 # device = 'cuda' if torch.cuda.is_available() else 'cpu'
 # summarizer.model.to(device)
-print(f"device summarizer is on = {next(summarizer.model.parameters()).device}")
+
 
 def summarize(text):
+    print(f"device summarizer is on = {next(summarizer.model.parameters()).device}")
     summarized = summarizer(text, max_length=130, min_length=30, do_sample=False)
     summary_text = summarized[0]['summary_text']
     return summary_text
