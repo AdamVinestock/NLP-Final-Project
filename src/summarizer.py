@@ -1,10 +1,11 @@
 from transformers import pipeline
 import torch
 
-summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+device = 0 if torch.cuda.is_available() else -1  # use GPU if available, otherwise CPU
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn", device=device)
+# summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
 # device = 'cuda' if torch.cuda.is_available() else 'cpu'
 # summarizer.model.to(device)
-
 
 def summarize(text):
     print(f"device summarizer is on = {next(summarizer.model.parameters()).device}")
