@@ -42,10 +42,7 @@ class PrepareSentenceContext(object):
         # Creating context for entire text chunk
         if self.context_policy=='summary' or self.context_policy=='summary_and_previous_sentence':
             summary = summarize(parsed.text)
-            if self.context is not None:
-                summary_context = self.context + ' ' + summary
-            else:
-                summary_context = summary
+            summary_context = summary
 
         running_sent_num = 0
         tag = None
@@ -71,7 +68,6 @@ class PrepareSentenceContext(object):
                 lengths.append(len(sent))
                 sent_text = str(sent)
                 texts.append(sent_text)
-
 
                 if self.context_policy == 'previous_sentence':
                     if self.context:
