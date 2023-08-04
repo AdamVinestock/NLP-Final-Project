@@ -93,7 +93,7 @@ class PrepareSentenceContext(object):
                     previous = sent_text
                 elif self.context_policy == 'previous_3_sentences':
                     if i==0:
-                        context = previous # previous will be None
+                        context = self.context
                         previous = sent_text
                     else:
                         if i<4:
@@ -133,11 +133,11 @@ class PrepareSentenceContext(object):
                 #
                 # contexts.append(context)
 
-        #### to delete
-        log = {'text': texts, 'length': lengths, 'context': contexts, 'tag': tags,
-                 'number_in_par': num_in_par}
-        print(f"parse sentence returns: {log}")
-        #### to delete
+        # #### to delete
+        # log = {'text': texts, 'length': lengths, 'context': contexts, 'tag': tags,
+        #          'number_in_par': num_in_par}
+        # print(f"parse sentence returns: {log}")
+        # #### to delete
 
         return {'text': texts, 'length': lengths, 'context': contexts, 'tag': tags,
                 'number_in_par': num_in_par}

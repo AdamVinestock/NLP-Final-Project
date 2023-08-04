@@ -1,6 +1,10 @@
 from transformers import pipeline
+import torch
 
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+device = 'cuda' if torch.cuda.is_available() else 'cpu'
+summarizer.model.to(device)
+
 
 # ARTICLE = """ Traditional practices have deeply shaped the training routine at the Flight Academy for a considerable time. Omer, with his relentless pursuit of improvement, made numerous efforts to enhance cadet training and their daily routine, effectively boosting performance and learning rates. This called for thinking beyond conventional means, as the traditional practices were firmly embedded in the organization's culture.
 #
