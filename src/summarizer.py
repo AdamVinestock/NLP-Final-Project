@@ -2,9 +2,9 @@ from transformers import pipeline
 import torch
 
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
-device = 'cuda' if torch.cuda.is_available() else 'cpu'
-summarizer.model.to(device)
-print(next(summarizer.model.parameters()).device)
+# device = 'cuda' if torch.cuda.is_available() else 'cpu'
+# summarizer.model.to(device)
+print(f"device summarizer is on = {next(summarizer.model.parameters()).device}")
 
 def summarize(text):
     summarized = summarizer(text, max_length=130, min_length=30, do_sample=False)
