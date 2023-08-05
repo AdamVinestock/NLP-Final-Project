@@ -3,6 +3,7 @@ import spacy
 import re
 from src.SentenceParser import SentenceParser
 from src.summarizer import summarize
+from src.QuestionGenerator import gen_question
 
 
 class PrepareSentenceContext(object):
@@ -113,6 +114,12 @@ class PrepareSentenceContext(object):
                             else:
                                 context = " ".join(previous_3)
                             previous = sent_text
+                elif self.context_policy == "QA":
+                    question = gen_question(sent_text)
+                    if self.context:
+                        context = self.context + ' ' + question
+                    else:
+                        context = question
                 else:
                     context = self.context
 

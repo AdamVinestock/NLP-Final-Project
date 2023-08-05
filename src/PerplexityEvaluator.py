@@ -22,9 +22,12 @@ class PerplexityEvaluator(object):
         text_ids = self.tokenizer(text, return_tensors='pt')
         if context:
             context_ids = self.tokenizer(context, return_tensors='pt')
-            input_ids = torch.concatenate([context_ids['input_ids'], text_ids['input_ids']], axis=1)
-            labels = torch.concatenate([torch.ones_like(context_ids['input_ids']) * self.ignore_index,
-                                        text_ids['input_ids']], axis=1)
+            # input_ids = torch.concatenate([context_ids['input_ids'], text_ids['input_ids']], axis=1)
+            # labels = torch.concatenate([torch.ones_like(context_ids['input_ids']) * self.ignore_index,
+            #                             text_ids['input_ids']], axis=1)
+            input_ids = torch.cat([context_ids['input_ids'], text_ids['input_ids']], dim=1)
+            labels = torch.cat([torch.ones_like(context_ids['input_ids']) * self.ignore_index,
+                                        text_ids['input_ids']], dim=1)
         else:
             input_ids = text_ids['input_ids']
             labels = input_ids
