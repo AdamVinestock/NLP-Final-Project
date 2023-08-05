@@ -5,7 +5,7 @@ device = 0 if torch.cuda.is_available() else -1  # use GPU if available, otherwi
 question_generator = pipeline("text2text-generation", model="iarfmoose/t5-base-question-generator", device=device)
 
 def gen_question(text):
-    print(f"question_generator is on device = {next(question_generator.model.parameters()).device}")
+    # print(f"question_generator is on device = {next(question_generator.model.parameters()).device}")
     question = question_generator(text, max_length=100, min_length=0, do_sample=False)
     question_text = question[0]["generated_text"]
     return question_text
