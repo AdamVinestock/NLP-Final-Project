@@ -31,8 +31,8 @@ class Pipe_line():
             human_dataset = get_text_from_chatgpt_abstracts_dataset(shuffle=False, text_field='real_abstract')
             machine_dataset = get_text_from_chatgpt_abstracts_dataset(shuffle=False, text_field='generated_abstract')
 
-        shortened_human_dataset = dataset.select(range(self.n))
-        shortened_machine_dataset = dataset.select(range(self.n))
+        shortened_human_dataset = human_dataset.select(range(self.n))
+        shortened_machine_dataset = machine_dataset.select(range(self.n))
 
         return shortened_human_dataset, shortened_machine_dataset
 
@@ -46,36 +46,36 @@ class Pipe_line():
 
     def CalculatePerplexity(self):
         # Perform log ppx calculation
-        human_df_list = []
-        machine_df_list = []
+        human_responses = []
+        machine_responses = []
         i = 0
         for parser in self.parsers_list:
-            for dataset in self.datasets_dict:
-                csv_name = self.policy_names[i] + "_" + str(dataset) + '.csv'
+            for dataset in self.datasets_dict:  # human or machine
+                csv_name = str(self.dataset_name) + "_" + str(dataset) + "_" + str(self.model.config.model_type) +"_" + self.policy_names[i] +'.csv'
                 iterate_over_texts(self.datasets_dict[dataset], self.sentence_detector, parser, csv_name)
                 if dataset == 'human':
                     df = pd.read_csv(csv_name)
-                    human_df_list.append(df)
+                    human_responses.append(df)
                 elif dataset == 'machine':
                     df = pd.read_csv(csv_name)
-                    machine_df_list.append(df)
+                    machine_responses.append(df)
             i += 1
 
-        return human_df_list, machine_df_list
+        return human_responses, machine_responses
 
-    def Calculate_Perplexity_Differance(self, human_df_list, machine_df_list):
+    def calc_ppx_diff_instance(self, human_responses, machine_responses):
         results = {'human': {}, 'machine': {}}
-        #differances_result = {policy}
+
 
         #  Select the "response" column and compute the mean
 
-        for dataset in self.datasets_dict:
+        for dataset in self.datasets_dict: # human or machine
             if dataset == 'human':
-                policy_df_list = human_df_list
-            if dataset == 'machine':
-                policy_df_list = machine_df_list
+                responses = human_responses
+            elif dataset == 'machine':
+                responses = machine_responses
 
-            for name, policy in enumerate(policy_df_list):
+            for i, policy in enumerate(responses):
                 policy_results = {'id': [], 'mean_perplexity': []}
                 for id in self.datasets_dict[dataset]['id']:
                     filtered_policy_df = policy[policy['name'] == id]
@@ -84,9 +84,27 @@ class Pipe_line():
                     # Saving results
                     policy_results['id'].append[id]
                     policy_results['id'].append[mean]
-                    results[dataset][self.policy_names[name]] = policy_results
+                    results[dataset][self.policy_names[i]] = policy_results
 
         return results
+
+    def calc_ppx_diff_chunck(self, human_responses, machine_responses):
+        results = {}
+
+        #  Select the "response" column and compute the mean
+
+        for dataset in self.datasets_dict: # human or machine
+            if dataset == 'human':
+                responses = human_responses
+            elif dataset == 'machine':
+                responses = machine_responses
+
+            for i, policy in enumerate(responses):
+                policy_results = (human_responses['respones'] - machine_responses['respones']).mean()
+                results[self.policy_names[i]] = policy_results
+
+        return results
+
 
 
 
