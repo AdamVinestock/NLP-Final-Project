@@ -14,6 +14,7 @@ policy_names = ['no_context', 'previous_sen', 'naive', 'naive_and_prev', 'summar
 
 class PipelineClass():
     def __init__(self, dataset_name, model, tokenizer, context_policies, contexts, policy_names, n=10):
+        self.model = model
         self.dataset_name = dataset_name
         self.context_policies = context_policies
         self.contexts = contexts
