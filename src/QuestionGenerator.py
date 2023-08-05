@@ -15,5 +15,7 @@ def gen_question(text):
 # text = "The term 'Moluccan' is an umbrella term that covers the various Austronesian and Papuan languages spoken on the islands."
 # text = "The largest group of Moluccans are the Tolo-speaking people."
 # text = "The Maluku Islands are a group of volcanic islands in eastern Indonesia, located about 1,000 kilometres east of Java and 2,000 kilometres south of New Guinea."
+# text = "groups inhabiting the Maluku Islands."
+
 # question = gen_question(text)
 # print("Generated question:", question)
