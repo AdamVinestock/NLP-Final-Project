@@ -1,3 +1,4 @@
+from many_atomic_detections import process_text, iterate_over_texts
 from src.PerplexityEvaluator import PerplexityEvaluator
 from src.PrepareSentenceContext import PrepareSentenceContext
 from src.dataset_loaders import (get_text_from_wiki_long_dataset,
