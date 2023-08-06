@@ -98,16 +98,9 @@ class PipelineClass():
     def calc_ppx_diff_chunk(self, human_responses, machine_responses):
 
         results = {}
-        for dataset in self.datasets_dict: # human or machine
-            if dataset == 'human':
-                responses = human_responses
-            elif dataset == 'machine':
-                responses = machine_responses
-
-            for i, policy in enumerate(responses):
-                print(f"human_responses['response'] = {human_responses['response']}")
-                policy_results = (human_responses['response'] - machine_responses['response']).mean()
-                results[self.policy_names[i]] = policy_results
+        for i, policy in enumerate(human_responses):
+            policy_results = (human_responses[i]['response'] - machine_responses[i]['response']).mean()
+            results[self.policy_names[i]] = policy_results
 
         return results
 
