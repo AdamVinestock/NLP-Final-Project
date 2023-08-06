@@ -100,7 +100,7 @@ class PipelineClass():
         results = {}
         for i, policy in enumerate(human_responses):
             policy_results = (human_responses[i]['response'] - machine_responses[i]['response']).mean()
-            results[self.policy_names[i]] = policy_results
+            results[self.policy_names[i]] = (human_responses[i]['response'].mean(), machine_responses[i]['response']).mean(), policy_results)
 
         return results
 
