@@ -47,7 +47,7 @@ class PipelineClass():
     def CreateParsers(self):
         parsers = []
         for policy, context in zip(self.context_policies, self.contexts):
-            parser = PrepareSentenceContext(policy, context)
+            parser = PrepareSentenceContext('spacy', policy, context)
             parsers.append(parser)
 
         return parsers
