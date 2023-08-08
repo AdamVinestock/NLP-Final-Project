@@ -73,28 +73,52 @@ class PipelineClass():
 
         return human_responses, machine_responses
 
-    def calc_ppx_diff_instance(self, human_responses, machine_responses):
-        results = {'human': {}, 'machine': {}}
+    def calc_mean_ppx_instance(self, human_responses, machine_responses):
+        """
+        Calculates the mean perplexity for each instance in the dataset
+        :param human_responses:
+        :param machine_responses:
+        :return:
+        """
 
-        #  Select the "response" column and compute the mean
-        for dataset in self.datasets_dict: # human or machine
-            if dataset == 'human':
-                responses = human_responses
-            elif dataset == 'machine':
-                responses = machine_responses
+        human, machine = [], []
 
-            for i, policy in enumerate(responses):
-                policy_results = {'id': [], 'mean_perplexity': []}
-                for id in self.datasets_dict[dataset]['id']:
-                    filtered_policy_df = policy[policy['name'] == id]
-                    mean = filtered_policy_df["response"].mean()
+        for i, context_policy_df in enumerate(human_responses):
+            h_grouped_mean = context_policy_df.groupby('name')['response'].mean().reset_index()
+            sorted_df = h_grouped_mean.sort_values(by='name', ascending=True)
+            human.append(sorted_df)
 
-                    # Saving results
-                    policy_results['id'].append[id]
-                    policy_results['id'].append[mean]
-                    results[dataset][self.policy_names[i]] = policy_results
 
-        return results
+        for i, context_policy_df in enumerate(machine_responses):
+            m_grouped_mean = context_policy_df.groupby('name')['response'].mean().reset_index()
+            sorted_df = m_grouped_mean.sort_values(by='name', ascending=True)
+            machine.append(sorted_df)
+
+        return human, machine
+
+
+
+        # results = {'human': {}, 'machine': {}}
+        #
+        # #  Select the "response" column and compute the mean
+        # for dataset in self.datasets_dict: # human or machine
+        #     if dataset == 'human':
+        #         responses = human_responses
+        #     elif dataset == 'machine':
+        #         responses = machine_responses
+        #
+        #     for i, context_policy_df in enumerate(responses):
+        #         policy_results = {'id': [], 'mean_perplexity': []}
+        #         for id in self.datasets_dict[dataset]['id']:
+        #             filtered_policy_df = context_policy_df[context_policy_df['name'] == id]
+        #             mean = filtered_policy_df["response"].mean()
+        #
+        #             # Saving results
+        #             policy_results['id'].append[id]
+        #             policy_results['id'].append[mean]
+        #             results[dataset][self.policy_names[i]] = policy_results
+        #
+        # return results
 
     def calc_ppx_diff_chunk(self, human_responses, machine_responses):
 
