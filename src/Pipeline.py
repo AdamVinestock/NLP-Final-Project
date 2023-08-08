@@ -15,13 +15,14 @@ policy_names = ['no_context', 'previous_sen', 'naive', 'naive_and_prev', 'summar
 
 
 class PipelineClass():
-    def __init__(self, dataset_name, model, tokenizer, context_policies, contexts, policy_names, n=10):
+    def __init__(self, dataset_name, model, tokenizer, context_policies, contexts, policy_names, from_sample = 0, to_sample =10):
         self.model = model
         self.dataset_name = dataset_name
         self.context_policies = context_policies
         self.contexts = contexts
         self.policy_names = policy_names
-        self.n = n
+        self.from_sample = from_sample
+        self.to_sample = to_sample
         self.sentence_detector = PerplexityEvaluator(model, tokenizer)
         self.human_dataset, self.machine_dataset = self.SplitDataset()
         self.parsers_list = self.CreateParsers()
@@ -40,8 +41,8 @@ class PipelineClass():
             human_dataset = get_text_from_chatgpt_abstracts_dataset(shuffle=False, text_field='real_abstract')
             machine_dataset = get_text_from_chatgpt_abstracts_dataset(shuffle=False, text_field='generated_abstract')
 
-        shortened_human_dataset = human_dataset.select(range(self.n))
-        shortened_machine_dataset = machine_dataset.select(range(self.n))
+        shortened_human_dataset = human_dataset.select(range(self.from_sample, self.to_sample))
+        shortened_machine_dataset = machine_dataset.select(range(self.from_sample, self.to_sample))
 
         return shortened_human_dataset, shortened_machine_dataset
 
