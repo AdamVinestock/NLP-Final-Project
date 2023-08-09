@@ -44,10 +44,10 @@ class PipelineClass():
             human_dataset = get_text_from_chatgpt_abstracts_dataset(shuffle=False, text_field='real_abstract')
             machine_dataset = get_text_from_chatgpt_abstracts_dataset(shuffle=False, text_field='generated_abstract')
 
-        shortened_human_dataset = human_dataset.select(range(self.from_sample, self.to_sample))
-        shortened_machine_dataset = machine_dataset.select(range(self.from_sample, self.to_sample))
+        truncated_human_dataset = human_dataset.select(range(self.from_sample, self.to_sample+1))
+        truncated_machine_dataset = machine_dataset.select(range(self.from_sample, self.to_sample+1))
 
-        return shortened_human_dataset, shortened_machine_dataset
+        return truncated_human_dataset, truncated_machine_dataset
 
     def CreateParsers(self):
         parsers = []
