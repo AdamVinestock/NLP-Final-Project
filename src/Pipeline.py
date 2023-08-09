@@ -15,11 +15,11 @@ policy_names = ['no_context', 'previous_sen', 'naive', 'naive_and_prev', 'summar
 
 
 class PipelineClass():
-    def __init__(self, dataset_name, model, tokenizer, context_policies, contexts, policy_names, from_sample = 0, to_sample =10):
+    def __init__(self, dataset_name, model, tokenizer, context_policies, fixed_context, policy_names, from_sample = 0, to_sample =10):
         self.model = model
         self.dataset_name = dataset_name
         self.context_policies = context_policies
-        self.contexts = contexts
+        self.context = fixed_context
         self.policy_names = policy_names
         self.from_sample = from_sample
         self.to_sample = to_sample
@@ -27,6 +27,7 @@ class PipelineClass():
         self.human_dataset, self.machine_dataset = self.SplitDataset()
         self.parsers_list = self.CreateParsers()
         self.datasets_dict = {'human': self.human_dataset, 'machine': self.machine_dataset}
+        self.human_responses, self.machine_responses = self.CalculatePerplexity()
 
     def SplitDataset(self):
         human_dataset = None
@@ -48,7 +49,7 @@ class PipelineClass():
 
     def CreateParsers(self):
         parsers = []
-        for policy, context in zip(self.context_policies, self.contexts):
+        for policy, context in zip(self.context_policies, self.context):
             parser = PrepareSentenceContext(context_policy = policy, context = context)
             parsers.append(parser)
 
@@ -76,9 +77,9 @@ class PipelineClass():
     def calc_mean_ppx_instance(self, human_responses, machine_responses):
         """
         Calculates the mean perplexity for each instance in the dataset
-        :param human_responses:
-        :param machine_responses:
-        :return:
+        :param human_responses: list of df's, each corresponding to a different context policy
+        :param machine_responses: list of df's, each corresponding to a different context policy
+        :return: list of df's, each dataframe contains the mean perplexity for each instance
         """
 
         human, machine = [], []
@@ -96,29 +97,6 @@ class PipelineClass():
 
         return human, machine
 
-
-
-        # results = {'human': {}, 'machine': {}}
-        #
-        # #  Select the "response" column and compute the mean
-        # for dataset in self.datasets_dict: # human or machine
-        #     if dataset == 'human':
-        #         responses = human_responses
-        #     elif dataset == 'machine':
-        #         responses = machine_responses
-        #
-        #     for i, context_policy_df in enumerate(responses):
-        #         policy_results = {'id': [], 'mean_perplexity': []}
-        #         for id in self.datasets_dict[dataset]['id']:
-        #             filtered_policy_df = context_policy_df[context_policy_df['name'] == id]
-        #             mean = filtered_policy_df["response"].mean()
-        #
-        #             # Saving results
-        #             policy_results['id'].append[id]
-        #             policy_results['id'].append[mean]
-        #             results[dataset][self.policy_names[i]] = policy_results
-        #
-        # return results
 
     def calc_ppx_diff_chunk(self, human_responses, machine_responses):
 
