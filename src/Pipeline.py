@@ -15,8 +15,9 @@ policy_names = ['no_context', 'previous_sen', 'naive', 'naive_and_prev', 'summar
 
 
 class PipelineClass():
-    def __init__(self, dataset_name, model, tokenizer, context_policies, fixed_context, policy_names, from_sample = 0, to_sample =10):
+    def __init__(self, dataset_name, model, model_name, tokenizer, context_policies, fixed_context, policy_names, from_sample = 0, to_sample =10):
         self.model = model
+        self.model_name = model_name
         self.dataset_name = dataset_name
         self.context_policies = context_policies
         self.context = fixed_context
@@ -62,7 +63,7 @@ class PipelineClass():
         i = 0
         for parser in self.parsers_list:
             for author in self.datasets_dict:  # human or machine
-                csv_name = str(self.dataset_name) + "_" + str(author) + "_" + str(self.model.config.model_type) + "_" + self.policy_names[i] + '.csv'
+                csv_name = str(self.dataset_name) + "_" + str(author) + "_" + str(self.model_name) + "_" + self.policy_names[i] + '.csv'
                 iterate_over_texts(self.datasets_dict[author], self.sentence_detector, parser, csv_name)
                 if author == 'human':
                     df = pd.read_csv(csv_name)
