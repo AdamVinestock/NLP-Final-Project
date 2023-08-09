@@ -15,6 +15,7 @@ import pandas as pd
 from tqdm import tqdm
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import logging
+import os
 import argparse
 import traceback
 from src.PerplexityEvaluator import PerplexityEvaluator
@@ -26,8 +27,8 @@ from src.dataset_loaders import (get_text_from_chatgpt_news_dataset,
                                  get_text_from_chatgpt_abstracts_dataset)
 from glob import glob
 
+
 logging.basicConfig(level=logging.INFO)
-# yada yada
 
 def process_text(text, atomic_detector, parser):
     chunks = parser(text)
@@ -68,9 +69,7 @@ def iterate_over_texts(dataset, atomic_detector, parser, output_file):
             print(f"Error details: {e}")
             traceback.print_exc()
             continue
-        # except:
-        #     print(f"Error processing {name}")
-        #     continue
+
         ids += r['chunk_ids']
         responses += r['responses']
         lengths += r['lengths']
@@ -80,8 +79,14 @@ def iterate_over_texts(dataset, atomic_detector, parser, output_file):
         df = pd.DataFrame({'num': ids, 'length': lengths, 
                            'response': responses, 'context_length': context_lengths,
                            'name': names})
-        logging.info(f"Saving results to {output_file}")
-        df.to_csv(output_file)
+
+        # Prepend the directory name to the output_file
+        save_path = os.path.join("Responses", output_file)
+        logging.info(f"Saving results to {save_path}")
+        df.to_csv(save_path)
+
+        # logging.info(f"Saving results to {output_file}")
+        # df.to_csv(output_file)
 
 
 def get_text_data_from_files(path, extension='*.txt'):
