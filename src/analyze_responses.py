@@ -28,7 +28,7 @@ def calc_diff_ppx_instance(human_responses, machine_responses):
     """
     input: human and machine mean responses sorted my 'name' (samples)
     returns df holding name and the difference between human and machine responses
-    Note: the higher the difference the better the context policy
+    Note: the larger the difference the better the context policy
     """
     diff_df = human_responses.copy()
     diff_df["response"] = human_responses["response"] - machine_responses["response"]
