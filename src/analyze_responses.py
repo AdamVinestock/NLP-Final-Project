@@ -38,6 +38,7 @@ def calc_h_m_diff(human_path, machine_path):
     print(h_sorted_df.head())
     print(m_sorted_df.head())
     diff_df = calc_diff_ppx_instance(h_sorted_df, m_sorted_df)    # human - machine perplexity for each instance
+    print(diff_df.head())
     return diff_df['response'].mean()
 
 
