@@ -30,8 +30,8 @@ class ResponseClass():
             human_dataset = get_text_from_wiki_long_dataset(shuffle=False, text_field='human_text')
             machine_dataset = get_text_from_wiki_long_dataset(shuffle=False, text_field='machine_text')
         elif self.dataset_name == "news-chatgpt-long":
-            human_dataset = get_text_from_chatgpt_news_long_dataset(shuffle=False, text_field='article')
-            machine_dataset = get_text_from_chatgpt_news_long_dataset(shuffle=False, text_field='chatgpt')
+            human_dataset = get_text_from_chatgpt_news_long_dataset(shuffle=False, text_field='human_text')
+            machine_dataset = get_text_from_chatgpt_news_long_dataset(shuffle=False, text_field='machine_text')
         elif self.dataset_name == "ChatGPT-Research-Abstracts":
             human_dataset = get_text_from_chatgpt_abstracts_dataset(shuffle=False, text_field='real_abstract')
             machine_dataset = get_text_from_chatgpt_abstracts_dataset(shuffle=False, text_field='generated_abstract')
