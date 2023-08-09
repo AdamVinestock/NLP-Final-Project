@@ -64,10 +64,10 @@ class PipelineClass():
             for author in self.datasets_dict:  # human or machine
                 csv_name = str(self.dataset_name) + "_" + str(author) + "_" + str(self.model.config.model_type) + "_" + self.policy_names[i] + '.csv'
                 iterate_over_texts(self.datasets_dict[dataset], self.sentence_detector, parser, csv_name)
-                if dataset == 'human':
+                if author == 'human':
                     df = pd.read_csv(csv_name)
                     human_responses.append(df)
-                elif dataset == 'machine':
+                elif author == 'machine':
                     df = pd.read_csv(csv_name)
                     machine_responses.append(df)
             i += 1
