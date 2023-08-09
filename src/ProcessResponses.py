@@ -55,7 +55,7 @@ class ResponseClass():
         human_responses = []
         machine_responses = []
         i = 0
-        for parser in tqdm(self.parsers_list, desc="Processing Context Policy"):
+        for parser in tqdm(self.parsers_list, desc="Processing Context Policy", position=0, leave=True):
             for author in self.datasets_dict:  # human or machine
                 csv_name = str(self.dataset_name)+"_"+str(author)+"_"+str(self.model_name)+"_"+self.policy_names[i]+"_"+self.range+'.csv'
                 iterate_over_texts(self.datasets_dict[author], self.sentence_detector, parser, csv_name)
