@@ -1,12 +1,5 @@
 import pandas as pd
 
-
-def load_csv(human_path, machine_path):
-    """
-    Return df's of human and machine responses
-    """
-    return pd.read_csv(human_path), pd.read_csv(machine_path)
-
 def calc_mean_ppx_instance(human_responses, machine_responses):
     """
     Each instance in the dataset has a unique "name" value with a different number of sentences for human and machine responses
@@ -33,5 +26,17 @@ def calc_diff_ppx_instance(human_responses, machine_responses):
     diff_df = human_responses.copy()
     diff_df["response"] = human_responses["response"] - machine_responses["response"]
     return diff_df
+
+def calc_h_m_diff(human_path, machine_path):
+    """
+    input: paths of human and machine df holding responses for each sentence
+    output: human-machine mean perplexity difference
+    """
+    h_df = pd.read_csv(human_path)     # human responses df with perplexity over all sentences
+    m_df = pd.read_csv(machine_path)   # machine responses df with perplexity over all sentences
+    h_sorted_df, m_sorted_df = calc_mean_ppx_instance(h_df, m_df) # mean perplexity for each instance
+    diff_df = calc_diff_ppx_instance(h_sorted_df, m_sorted_df)    # human - machine perplexity for each instance
+    return diff_df['response'].mean()
+
 
 
