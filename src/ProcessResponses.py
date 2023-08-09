@@ -59,10 +59,10 @@ class ResponseClass():
                 csv_name = str(self.dataset_name)+"_"+str(author)+"_"+str(self.model_name)+"_"+self.policy_names[i]+"_"+self.range+'.csv'
                 iterate_over_texts(self.datasets_dict[author], self.sentence_detector, parser, csv_name)
                 if author == 'human':
-                    df = pd.read_csv(csv_name)
+                    df = pd.read_csv("Responses/"+csv_name)
                     human_responses.append(df)
                 elif author == 'machine':
-                    df = pd.read_csv(csv_name)
+                    df = pd.read_csv("Responses/"+csv_name)
                     machine_responses.append(df)
             i += 1
 
