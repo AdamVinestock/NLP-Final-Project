@@ -35,10 +35,7 @@ def calc_h_m_diff(human_path, machine_path):
     h_df = pd.read_csv(human_path)     # human responses df with perplexity over all sentences
     m_df = pd.read_csv(machine_path)   # machine responses df with perplexity over all sentences
     h_sorted_df, m_sorted_df = calc_mean_ppx_instance(h_df, m_df) # mean perplexity for each instance
-    print(h_sorted_df.head())
-    print(m_sorted_df.head())
     diff_df = calc_diff_ppx_instance(h_sorted_df, m_sorted_df)    # human - machine perplexity for each instance
-    print(diff_df.head())
     return diff_df['response'].mean()
 
 
