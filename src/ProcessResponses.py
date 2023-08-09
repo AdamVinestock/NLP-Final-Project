@@ -5,7 +5,6 @@ from src.dataset_loaders import (get_text_from_wiki_long_dataset,
                                  get_text_from_chatgpt_news_long_dataset,
                                  get_text_from_chatgpt_abstracts_dataset)
 import pandas as pd
-from tqdm import tqdm
 
 class ResponseClass():
     def __init__(self, dataset_name, model, model_name, tokenizer, context_policies, fixed_context, policy_names, from_sample = 0, to_sample =10):
@@ -55,7 +54,7 @@ class ResponseClass():
         human_responses = []
         machine_responses = []
         i = 0
-        for parser in tqdm(self.parsers_list, desc="Processing Context Policy", position=0, leave=True):
+        for parser in self.parsers_list:
             for author in self.datasets_dict:  # human or machine
                 csv_name = str(self.dataset_name)+"_"+str(author)+"_"+str(self.model_name)+"_"+self.policy_names[i]+"_"+self.range+'.csv'
                 iterate_over_texts(self.datasets_dict[author], self.sentence_detector, parser, csv_name)
