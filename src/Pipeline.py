@@ -61,8 +61,8 @@ class PipelineClass():
         machine_responses = []
         i = 0
         for parser in self.parsers_list:
-            for dataset in self.datasets_dict:  # human or machine
-                csv_name = str(self.dataset_name) + "_" + str(dataset) + "_" + str(self.model.config.model_type) + "_" + self.policy_names[i] + '.csv'
+            for author in self.datasets_dict:  # human or machine
+                csv_name = str(self.dataset_name) + "_" + str(author) + "_" + str(self.model.config.model_type) + "_" + self.policy_names[i] + '.csv'
                 iterate_over_texts(self.datasets_dict[dataset], self.sentence_detector, parser, csv_name)
                 if dataset == 'human':
                     df = pd.read_csv(csv_name)
