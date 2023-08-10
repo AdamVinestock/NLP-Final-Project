@@ -26,10 +26,10 @@ def calc_diff_ppx_instance(human_responses, machine_responses):
     diff_df["response"] = human_responses["response"] - machine_responses["response"]
     return diff_df
 
-def calc_h_m_diff(human_path, machine_path):
+def calc_sample_diff(human_path, machine_path):
     """
     input: paths of human and machine df holding responses for each sentence
-    output: human-machine mean perplexity difference
+    output: human-machine mean perplexity difference sample-wise
     """
     h_df = pd.read_csv(human_path)     # human responses df with perplexity over all sentences
     m_df = pd.read_csv(machine_path)   # machine responses df with perplexity over all sentences
