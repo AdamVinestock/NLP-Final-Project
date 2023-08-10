@@ -81,7 +81,7 @@ def iterate_over_texts(dataset, atomic_detector, parser, output_file):
                            'name': names})
 
         # Prepend the directory name to the output_file
-        save_path = os.path.join("Responses", output_file)
+        save_path = "Responses/"+output_file
         logging.info(f"Saving results to {save_path}")
         df.to_csv(save_path)
 
