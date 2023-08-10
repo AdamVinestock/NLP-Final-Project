@@ -87,7 +87,7 @@ def compare_hist(human_path1, machine_path1, human_path2, machine_path2):
     fig, axs = plt.subplots(1, 2, figsize=(12, 5))
     bins = np.arange(min(h_df1["response"].min(), m_df1["response"].min(),h_df2["response"].min(), m_df2["response"].min()),
                 max(h_df1["response"].max(), m_df1["response"].max(), h_df2["response"].max(), m_df2["response"].max()),
-                     0.05)
+                     0.1)
     axs[0].hist(h_df1["response"], bins=bins, alpha=0.5, label='human text')
     axs[0].hist(m_df1["response"], bins=bins, alpha=0.5, label='machine text')
     axs[0].set_title(f"Context policy - {context_policy1}")
