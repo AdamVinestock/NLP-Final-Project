@@ -33,8 +33,8 @@ class ResponseClass():
             human_dataset = get_text_from_chatgpt_news_long_dataset(shuffle=False, text_field='human_text')
             machine_dataset = get_text_from_chatgpt_news_long_dataset(shuffle=False, text_field='machine_text')
         elif self.dataset_name == "ChatGPT-Research-Abstracts":
-            human_dataset = get_text_from_chatgpt_abstracts_dataset(shuffle=False, text_field='real_abstract')
-            machine_dataset = get_text_from_chatgpt_abstracts_dataset(shuffle=False, text_field='generated_abstract')
+            human_dataset = get_text_from_chatgpt_abstracts_dataset(shuffle=False, text_field='human_text')
+            machine_dataset = get_text_from_chatgpt_abstracts_dataset(shuffle=False, text_field='machine_text')
 
         truncated_human_dataset = human_dataset.select(range(self.from_sample, self.to_sample+1))
         truncated_machine_dataset = machine_dataset.select(range(self.from_sample, self.to_sample+1))
