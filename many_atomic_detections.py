@@ -81,7 +81,6 @@ def iterate_over_texts(dataset, atomic_detector, parser, output_file):
                            'name': names})
 
         save_path = "Responses/"+output_file
-        print(f"csv path: {save_path}")
         logging.info(f"Saving results to {save_path}")
         df.to_csv(save_path)
 
