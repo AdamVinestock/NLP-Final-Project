@@ -41,9 +41,10 @@ class PrepareSentenceContext(object):
         parsed = self.nlp(text)
 
         # Creating context for entire text chunk
-        if self.context_policy=='summary' or self.context_policy=='summary-and-previous-sentence':
+        if self.context_policy == 'summary' or self.context_policy == 'summary-and-previous-sentence':
             summary = summarize(parsed.text)
             summary_context = summary
+            print(f"Summary: {summary}")
 
         running_sent_num = 0
         tag = None

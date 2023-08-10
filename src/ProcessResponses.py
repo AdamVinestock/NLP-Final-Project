@@ -57,7 +57,6 @@ class ResponseClass():
         for parser in self.parsers_list:
             for author in self.datasets_dict:  # human or machine
                 csv_name = str(self.dataset_name)+"_"+str(author)+"_"+str(self.model_name)+"_"+self.policy_names[i]+"_"+self.range+'.csv'
-                print(f"csv name: {csv_name}")
                 iterate_over_texts(self.datasets_dict[author], self.sentence_detector, parser, csv_name)
                 if author == 'human':
                     df = pd.read_csv("Responses/"+csv_name)
