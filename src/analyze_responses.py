@@ -96,7 +96,7 @@ def compare_hist(human_path1, machine_path1, human_path2, machine_path2, title='
 
     axs[1].hist(h_df2["response"], bins=bins, alpha=0.5, label='human text')
     axs[1].hist(m_df2["response"], bins=bins, alpha=0.5, label='machine text')
-    axs[1].set_title(f"Context policy - {context_policy2})
+    axs[1].set_title(f"Context policy - {context_policy2}")
     axs[1].set_xlabel('log perplexity')
     axs[1].set_ylabel('Frequency')
     axs[1].legend()
