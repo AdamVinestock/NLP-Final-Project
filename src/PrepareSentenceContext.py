@@ -70,7 +70,7 @@ class PrepareSentenceContext(object):
                 sent_text = str(sent)
                 texts.append(sent_text)
 
-                if self.context_policy == 'previous_sentence':
+                if self.context_policy == 'previous-sentence':
                     if self.context:
                         if previous is not None:
                             context = self.context + ' ' + previous
@@ -85,7 +85,7 @@ class PrepareSentenceContext(object):
                     else:
                         context = summary_context
 
-                elif self.context_policy == 'summary_and_previous_sentence':
+                elif self.context_policy == 'summary-and-previous-sentence':
                     if previous is not None:
                         if self.context:
                             context = self.context + ' ' + summary_context + ' ' + previous
@@ -94,7 +94,7 @@ class PrepareSentenceContext(object):
                     else:
                         context = summary_context
                     previous = sent_text
-                elif self.context_policy == 'previous_3_sentences':
+                elif self.context_policy == 'previous-3-sentences':
                     if i==0:
                         context = self.context
                         previous = sent_text
@@ -125,22 +125,6 @@ class PrepareSentenceContext(object):
 
                 contexts.append(context)
 
-
-                # if self.context is not None and self.context_policy == 'previous_sentence':
-                #     if previous is not None:
-                #         context = self.context+' '+previous
-                #     else: # if this is the first sentence in the text previous is None, we cannot concat string to None
-                #         context = self.context
-                #     previous = sent_text
-                # elif self.context is not None and self.context_policy is None:
-                #     context = self.context
-                # elif self.context is None and self.context_policy == 'previous_sentence':
-                #     context = previous
-                #     previous = sent_text
-                # else:
-                #     context = None
-                #
-                # contexts.append(context)
 
         # #### to delete
         # log = {'text': texts, 'length': lengths, 'context': contexts, 'tag': tags,
