@@ -40,13 +40,10 @@ class PrepareSentenceContext(object):
         text = re.sub("(</?[a-zA-Z0-9 ]+>)\s+", r"\1. ", text)  # to make sure that tags are in separate sentences
         parsed = self.nlp(text)
 
-        print(f"Current context policy: {self.context_policy}")
-
         # Creating context for entire text sample
         if self.context_policy == 'summary' or self.context_policy == 'summary-and-previous-sentence':
             summary = summarize(parsed.text)
             summary_context = summary
-            print(f"Summary: {summary_context}")
 
         running_sent_num = 0
         tag = None
@@ -129,11 +126,11 @@ class PrepareSentenceContext(object):
                 contexts.append(context)
 
 
-        #### to delete
-        log = {'text': texts, 'length': lengths, 'context': contexts, 'tag': tags,
-                 'number_in_par': num_in_par}
-        print(f"parse sentence returns: {log}")
-        #### to delete
+        # #### to delete
+        # log = {'text': texts, 'length': lengths, 'context': contexts, 'tag': tags,
+        #          'number_in_par': num_in_par}
+        # print(f"parse sentence returns: {log}")
+        # #### to delete
 
         return {'text': texts, 'length': lengths, 'context': contexts, 'tag': tags,
                 'number_in_par': num_in_par}
