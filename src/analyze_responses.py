@@ -52,19 +52,20 @@ def extract_info_from_path(path):
     context_policy = name_parts[3].replace('-', ' ').capitalize()
     return dataset_name, author, model, context_policy
 
-def create_hist(human_path, machine_path, title='Histograms of responses'):
+def create_hist(human_path, machine_path):
     """
     input: paths of human and machine csv holding responses for each sentence
     output: histogram of human and machine perplexity values
     """
     h_df = pd.read_csv(human_path)
     m_df = pd.read_csv(machine_path)
+    dataset_name, author, model, context_policy = extract_info_from_path(human_path)
     bins = np.arange(min(h_df["response"].min(), m_df["response"].min()),
                      max(h_df["response"].max(), m_df["response"].max()),
-                     0.2)
+                     0.1)
     plt.hist(h_df["response"], bins=bins, alpha=0.5, label='human text')
     plt.hist(m_df["response"], bins=bins, alpha=0.5, label='machine text')
-    plt.title(title)
+    plt.title(f"Dataset - {} with Context policy - {context_policy}
     plt.xlabel('log perplexity')
     plt.ylabel('Frequency')
     plt.legend(loc='upper right')
