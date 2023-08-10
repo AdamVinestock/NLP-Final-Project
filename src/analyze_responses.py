@@ -10,13 +10,10 @@ def calc_mean_ppx_instance(human_responses, machine_responses):
     :param machine_responses: df with responses
     :return: human and machine dataframe containing the mean perplexity for each instance
     """
-
     h_grouped_mean = human_responses.groupby('name')['response'].mean().reset_index()
     h_sorted_df = h_grouped_mean.sort_values(by='name', ascending=True)
-
     m_grouped_mean = machine_responses.groupby('name')['response'].mean().reset_index()
     m_sorted_df = m_grouped_mean.sort_values(by='name', ascending=True)
-
     return h_sorted_df, m_sorted_df
 
 def calc_diff_ppx_instance(human_responses, machine_responses):
@@ -105,6 +102,22 @@ def compare_hist(human_path1, machine_path1, human_path2, machine_path2):
     plt.suptitle(f"Dataset - {dataset_name1}", fontsize=16)
     plt.tight_layout()
     plt.show()
+
+def calc_diff(human_path, machine_path):
+    """
+    input: paths of human and machine csv's holding responses for each sentence
+    output: (human - machine)/pooled_std perplexity difference
+    """
+    h_df = pd.read_csv(human_path)
+    m_df = pd.read_csv(machine_path)
+    h_mean = h_df["response"].mean()
+    m_mean = m_df["response"].mean()
+    h_std = h_df["response"].std()
+    m_std = m_df["response"].std()
+    pooled_std = np.sqrt((h_std**2 + m_std**2)/2)
+    diff = (h_mean - m_mean)/pooled_std
+    return diff
+
 
 
 
