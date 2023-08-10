@@ -108,12 +108,9 @@ def calc_diff(human_path, machine_path):
     input: paths of human and machine csv's holding responses for each sentence
     output: (human - machine)/pooled_std perplexity difference
     """
-    h_df = pd.read_csv(human_path)
-    m_df = pd.read_csv(machine_path)
-    h_mean = h_df["response"].mean()
-    m_mean = m_df["response"].mean()
-    h_std = h_df["response"].std()
-    m_std = m_df["response"].std()
+    h_df, m_df = pd.read_csv(human_path), pd.read_csv(machine_path)
+    h_mean, m_mean = h_df["response"].mean(), m_df["response"].mean()
+    h_std, m_std = h_df["response"].std(), m_df["response"].std()
     pooled_std = np.sqrt((h_std**2 + m_std**2)/2)
     diff = (h_mean - m_mean)/pooled_std
     return diff
