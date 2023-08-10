@@ -44,7 +44,7 @@ class PrepareSentenceContext(object):
         if self.context_policy == 'summary' or self.context_policy == 'summary-and-previous-sentence':
             summary = summarize(parsed.text)
             summary_context = summary
-            print(f"Summary: {summary}")
+            print(f"Summary: {summary_context}")
 
         running_sent_num = 0
         tag = None
