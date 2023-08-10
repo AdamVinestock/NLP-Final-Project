@@ -38,5 +38,26 @@ def calc_h_m_diff(human_path, machine_path):
     diff_df = calc_diff_ppx_instance(h_sorted_df, m_sorted_df)    # human - machine perplexity for each instance
     return diff_df['response'].mean()
 
+def create_hist(human_path, machine_path, title='Histograms of responses'):
+    """
+    input: paths of human and machine df holding responses for each sentence
+    output: histogram of human and machine perplexity values
+    """
+    h_df = pd.read_csv(human_path)
+    m_df = pd.read_csv(machine_path)
+    bins = np.arange(min(h_df["response"].min(), m_df["response"].min()),
+                     max(h_df["response"].max(), m_df["response"].max()),
+                     0.2)
+    plt.hist(h_df["response"], bins=bins, alpha=0.5, label='human responses')
+    plt.hist(m_df["response"], bins=bins, alpha=0.5, label='machine responses')
+    plt.title(title)
+    plt.xlabel('log perplexity')
+    plt.ylabel('Frequency')
+    plt.legend(loc='upper right')
+    plt.show()
+
+
+
+
 
 
