@@ -65,7 +65,7 @@ def create_hist(human_path, machine_path):
                      0.1)
     plt.hist(h_df["response"], bins=bins, alpha=0.5, label='human text')
     plt.hist(m_df["response"], bins=bins, alpha=0.5, label='machine text')
-    plt.title(f"Dataset - {} with Context policy - {context_policy}
+    plt.title(f"Dataset - {dataset_name} with Context Policy - {context_policy}")
     plt.xlabel('log perplexity')
     plt.ylabel('Frequency')
     plt.legend(loc='upper right')
