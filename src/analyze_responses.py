@@ -42,7 +42,7 @@ def calc_h_m_diff(human_path, machine_path):
 
 def create_hist(human_path, machine_path, title='Histograms of responses'):
     """
-    input: paths of human and machine df holding responses for each sentence
+    input: paths of human and machine csv holding responses for each sentence
     output: histogram of human and machine perplexity values
     """
     h_df = pd.read_csv(human_path)
@@ -50,12 +50,45 @@ def create_hist(human_path, machine_path, title='Histograms of responses'):
     bins = np.arange(min(h_df["response"].min(), m_df["response"].min()),
                      max(h_df["response"].max(), m_df["response"].max()),
                      0.2)
-    plt.hist(h_df["response"], bins=bins, alpha=0.5, label='human responses')
-    plt.hist(m_df["response"], bins=bins, alpha=0.5, label='machine responses')
+    plt.hist(h_df["response"], bins=bins, alpha=0.5, label='human text')
+    plt.hist(m_df["response"], bins=bins, alpha=0.5, label='machine text')
     plt.title(title)
     plt.xlabel('log perplexity')
     plt.ylabel('Frequency')
     plt.legend(loc='upper right')
+    plt.show()
+
+def compare_hist(human_path1, machine_path1, human_path2, machine_path2, title='Histograms of responses'):
+    """
+    input: paths of human and machine csv holding responses for each sentence
+    output: histogram of human and machine perplexity values
+    """
+    h_df1 = pd.read_csv(human_path1)
+    m_df1 = pd.read_csv(machine_path1)
+
+    h_df2 = pd.read_csv(human_path2)
+    m_df2 = pd.read_csv(machine_path2)
+
+    fig, axs = plt.subplots(1, 2, figsize=(12, 5))
+    bins = np.arange(min(h_df1["response"].min(), m_df1["response"].min(),h_df2["response"].min(), m_df2["response"].min()),
+                max(h_df1["response"].max(), m_df1["response"].max(), h_df2["response"].max(), m_df2["response"].max()),
+                     0.1)
+    axs[0].hist(h_df1["response"], bins=bins, alpha=0.5, label='human text1')
+    axs[0].hist(m_df1["response"], bins=bins, alpha=0.5, label='machine text1')
+    axs[0].set_title('Dataset 1')
+    axs[0].set_xlabel('log perplexity')
+    axs[0].set_ylabel('Frequency')
+    axs[0].legend()
+
+    axs[1].hist(h_df2["response"], bins=bins, alpha=0.5, label='human text2')
+    axs[1].hist(m_df2["response"], bins=bins, alpha=0.5, label='machine text2')
+    axs[1].set_title('Dataset 2')
+    axs[1].set_xlabel('log perplexity')
+    axs[1].set_ylabel('Frequency')
+    axs[1].legend()
+
+    plt.suptitle(title)
+    plt.tight_layout()
     plt.show()
 
 
