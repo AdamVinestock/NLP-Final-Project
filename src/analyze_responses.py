@@ -116,8 +116,8 @@ def compare_context_domain(human_path1, machine_path1, human_path2, machine_path
     m_df3 = pd.read_csv(machine_path3)
 
     dataset_name1, author1, model1, context_policy1 = extract_info_from_path(human_path1)
-    _, _, _, context_policy2 = extract_info_from_path(human_path2)
-    _, _, _, context_policy3 = extract_info_from_path(human_path3)
+    dataset_name2, _, _, _ = extract_info_from_path(human_path2)
+    dataset_name3, _, _, _ = extract_info_from_path(human_path3)
 
     fig, axs = plt.subplots(1, 3, figsize=(18, 5))
     bins = np.arange(min(h_df1["response"].min(), m_df1["response"].min(), h_df2["response"].min(), m_df2["response"].min(), h_df3["response"].min(), m_df3["response"].min()),
@@ -126,25 +126,26 @@ def compare_context_domain(human_path1, machine_path1, human_path2, machine_path
 
     axs[0].hist(h_df1["response"], bins=bins, alpha=0.5, label='human text')
     axs[0].hist(m_df1["response"], bins=bins, alpha=0.5, label='machine text')
-    axs[0].set_title(f"Context policy - {context_policy1}")
+    axs[0].set_title(f"Domain - {dataset_name1}")
     axs[0].set_xlabel('Log-perplexity')
     axs[0].set_ylabel('Frequency')
     axs[0].legend()
 
     axs[1].hist(h_df2["response"], bins=bins, alpha=0.5, label='human text')
     axs[1].hist(m_df2["response"], bins=bins, alpha=0.5, label='machine text')
-    axs[1].set_title(f"Context policy - {context_policy2}")
+    axs[1].set_title(f"Domain - {dataset_name2}")
     axs[1].set_xlabel('Log-perplexity')
     axs[1].set_ylabel('Frequency')
     axs[1].legend()
 
     axs[2].hist(h_df3["response"], bins=bins, alpha=0.5, label='human text')
     axs[2].hist(m_df3["response"], bins=bins, alpha=0.5, label='machine text')
-    axs[2].set_title(f"Context policy - {context_policy3}")
+    axs[2].set_title(f"Domain - {dataset_name3}")
     axs[2].set_xlabel('Log-perplexity')
     axs[2].set_ylabel('Frequency')
     axs[2].legend()
 
+    plt.suptitle(f"Context Policy - {context_policy1}", fontsize=16)
     plt.tight_layout()
     plt.show()
 
