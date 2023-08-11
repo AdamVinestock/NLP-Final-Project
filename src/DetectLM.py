@@ -5,7 +5,7 @@ from tqdm import tqdm
 import logging
 
 
-def truncae_to_max_no_tokens(text, max_no_tokens):
+def truncate_to_max_no_tokens(text, max_no_tokens):
     return " ".join(text.split()[:max_no_tokens])
 
 
@@ -100,7 +100,7 @@ class DetectLM(object):
         for sent, ctx in tqdm(zip(sentences, contexts)):
             length = self._get_length(sent)
             if self.length_limit_policy == 'truncate':
-                sent = truncae_to_max_no_tokens(sent, self.max_len)
+                sent = truncate_to_max_no_tokens(sent, self.max_len)
             responses.append(self._test_sentence(sent, ctx))
             lengths.append(length)
         return responses, lengths
