@@ -111,7 +111,8 @@ def calc_diff(human_path, machine_path):
     h_df, m_df = pd.read_csv(human_path), pd.read_csv(machine_path)
     h_mean, m_mean = h_df["response"].mean(), m_df["response"].mean()
     h_std, m_std = h_df["response"].std(), m_df["response"].std()
-    pooled_std = np.sqrt((h_std**2 + m_std**2)/2)
+    n_h, n_m = len(h_df), len(m_df)
+    pooled_std = np.sqrt((n_h-1) * h_std**2 + (n_m-1) * m_std**2)/ (n_h + n_h -2))
     diff = (h_mean - m_mean)/pooled_std
     return diff
 
