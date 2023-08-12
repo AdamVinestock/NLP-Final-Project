@@ -75,6 +75,10 @@ def fit_per_length_survival_function(lengths, xx, G=501, log_space=True):
             ll_valid.append(l)
             zz.append(univariate_survival_func(xx0))
 
+    test_zz = np.vstack(zz)
+    assert not np.isnan(test_zz).any()
+    assert not np.isinf(test_zz).any()
+
     func = RectBivariateSpline(np.array(ll_valid), xx0, np.vstack(zz))
     if log_space:
         def func2d(x, y):
