@@ -54,6 +54,9 @@ def fit_per_length_survival_function(lengths, xx, G=501, log_space=True):
 
     assert len(lengths) == len(xx)
 
+    assert not np.isnan(lengths).any() and not np.isnan(xx).any()   # To delete!!!!!!!!!!!!!
+    assert not np.isinf(lengths).any() and not np.isinf(xx).any()
+
     min_tokens_per_sentence = lengths.min()
     max_tokens_per_sentence = lengths.max()
     ll = np.arange(min_tokens_per_sentence, max_tokens_per_sentence)
@@ -68,6 +71,7 @@ def fit_per_length_survival_function(lengths, xx, G=501, log_space=True):
         xx1 = xx[lengths == l]
         if len(xx1) > 0:
             univariate_survival_func = fit_survival_func(xx1, log_space=log_space)
+            assert not np.isnan(univariate_survival_func(xx0)).any()  # To delete!!!!!!!!!!!!!
             ll_valid.append(l)
             zz.append(univariate_survival_func(xx0))
 
