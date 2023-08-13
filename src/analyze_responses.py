@@ -58,7 +58,7 @@ def plot_roc_auc(human_path, machine_path):
     labels = np.concatenate([np.ones_like(h_df), np.zeros_like(m_df)])
 
     # Concatenate the responses
-    responses = np.concatenate([human_responses['response'], machine_responses['response']])
+    responses = np.concatenate([h_df['response'], m_df['response']])
 
     # Compute ROC curve
     fpr, tpr, _ = roc_curve(labels, responses)
