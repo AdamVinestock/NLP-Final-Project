@@ -253,6 +253,53 @@ def prepare_results(human_path_base, machine_path_base, human_path, machine_path
 
     return [h_mean, m_mean, diff, diff_from_base, roc_auc]
 
+def sen_length_separation(human_path, machine_path):
+    """
+    inputs: paths of human and machine csv's holding responses and sentence lengths
+    outputs 6 plots (histogram and roc curve) for each sentence range 0<sen_length<20, 20<=sen_length<40, 40<=sen_length
+    """
+    h_df = pd.read_csv(human_path)
+    m_df = pd.read_csv(machine_path)
+
+    # Define ranges for sentence lengths
+    ranges = [(0, 20), (20, 40), (40, float('inf'))]
+
+    fig, axs = plt.subplots(3, 2, figsize=(12, 15))
+
+    for idx, (lower, upper) in enumerate(ranges):
+        # Filter dataframes based on sentence length
+        h_filtered = h_df[(h_df['sentence_length'] >= lower) & (h_df['sentence_length'] < upper)]
+        m_filtered = m_df[(m_df['sentence_length'] >= lower) & (m_df['sentence_length'] < upper)]
+
+        # Compute histogram bins
+        bins = np.linspace(
+            min(h_filtered['response'].min(), m_filtered['response'].min()),
+            max(h_filtered['response'].max(), m_filtered['response'].max()),
+            50
+        )
+
+        # Plot histogram
+        axs[idx, 0].hist(h_filtered['response'], bins=bins, alpha=0.5, label='human text')
+        axs[idx, 0].hist(m_filtered['response'], bins=bins, alpha=0.5, label='machine text')
+        axs[idx, 0].set_title(f"Sentence Length: {lower} to {upper}")
+        axs[idx, 0].set_xlabel('Log-perplexity')
+        axs[idx, 0].set_ylabel('Frequency')
+        axs[idx, 0].legend()
+
+        # Compute ROC values
+        fpr, tpr, roc_auc = compute_roc_values(h_filtered, m_filtered)
+
+        # Plot ROC curve
+        axs[idx, 1].plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc:.2f})')
+        axs[idx, 1].plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+        axs[idx, 1].set_xlabel('False Positive Rate')
+        axs[idx, 1].set_ylabel('True Positive Rate')
+        axs[idx, 1].legend(loc='lower right')
+        axs[idx, 1].grid(True, which='both', linestyle='--', linewidth=0.5)
+
+    plt.tight_layout()
+    plt.show()
+
 
 
 
