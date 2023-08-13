@@ -266,22 +266,29 @@ def sen_length_separation(human_path, machine_path):
 
     fig, axs = plt.subplots(3, 2, figsize=(12, 15))
 
+    # Compute histogram bins
+    bins = np.linspace(
+        min(h_df['response'].min(), m_df['response'].min()),
+        max(h_df['response'].max(), m_df['response'].max()),
+        0.1
+    )
+
     for idx, (lower, upper) in enumerate(ranges):
         # Filter dataframes based on sentence length
         h_filtered = h_df[(h_df['length'] >= lower) & (h_df['length'] < upper)]
         m_filtered = m_df[(m_df['length'] >= lower) & (m_df['length'] < upper)]
 
-        # Compute histogram bins
-        bins = np.linspace(
-            min(h_filtered['response'].min(), m_filtered['response'].min()),
-            max(h_filtered['response'].max(), m_filtered['response'].max()),
-            50
-        )
+        # # Compute histogram bins
+        # bins = np.linspace(
+        #     min(h_filtered['response'].min(), m_filtered['response'].min()),
+        #     max(h_filtered['response'].max(), m_filtered['response'].max()),
+        #     0.1
+        # )
 
         # Plot histogram
         axs[idx, 0].hist(h_filtered['response'], bins=bins, alpha=0.5, label='human text')
         axs[idx, 0].hist(m_filtered['response'], bins=bins, alpha=0.5, label='machine text')
-        axs[idx, 0].set_title(f"Sentence Length: {lower} to {upper}")
+        axs[idx, 0].set_title(f"Sentence Length: {lower} to {upper-1}")
         axs[idx, 0].set_xlabel('Log-perplexity')
         axs[idx, 0].set_ylabel('Frequency')
         axs[idx, 0].legend()
