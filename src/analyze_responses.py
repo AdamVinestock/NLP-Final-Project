@@ -175,7 +175,7 @@ def prepare_results(human_path_base, machine_path_base, human_path, machine_path
     n_h, n_m = len(h_df), len(m_df)
     pooled_std = np.sqrt(((n_h-1) * h_std**2 + (n_m-1) * m_std**2)/ (n_h + n_h -2))
     diff = (h_mean - m_mean)/pooled_std
-    return [diff, h_base_mean, m_base_mean, h_mean, m_mean]
+    return [h_mean, m_mean, diff]
 
 
 
