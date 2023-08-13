@@ -167,22 +167,19 @@ def prepare_results(human_path_base, machine_path_base, human_path, machine_path
     input: paths of human and machine csv's holding responses for each sentence in a particular dataset for no-context (baseline) and a chosen context policy
     output: list of response results containing: [mean_diff, mean human no context, mean human with context, mean machine no context, mean machine with context]
     """
-    h_base_df, m_base_df = pd.read_csv(human_path_base), pd.read_csv(machine_path_base)
-    h_base_mean, m_base_mean = h_base_df["response"].mean(), m_base_df["response"].mean()
     h_df, m_df = pd.read_csv(human_path), pd.read_csv(machine_path)
     h_mean, m_mean = h_df["response"].mean(), m_df["response"].mean()
-    h_std, m_std = h_df["response"].std(), m_df["response"].std()
-    n_h, n_m = len(h_df), len(m_df)
-    pooled_std = np.sqrt(((n_h-1) * h_std**2 + (n_m-1) * m_std**2)/ (n_h + n_h -2))
-    diff = (h_mean - m_mean)/pooled_std
-    if diff > 0:
-        diff = f"+ {diff} ↑"
-    elif diff < 0:
-        diff =  f"- {-diff} ↓"
+    diff = calc_diff(human_path, machine_path)
+    base_diff = calc_diff(human_path_base, machine_path_base)
+    diff_from_base = diff - base_diff
+    if diff_from_base > 0:
+        diff_from_base = f"+ {diff_from_base} ↑"
+    elif diff_from_base < 0:
+        diff_from_base =  f"- {-diff_from_base} ↓"
     else:
-        diff = "0"
+        diff_from_base = "0"
 
-    return [h_mean, m_mean, diff]
+    return [h_mean, m_mean, diff, diff_from_base]
 
 
 
