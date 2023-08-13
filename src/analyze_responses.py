@@ -268,8 +268,8 @@ def sen_length_separation(human_path, machine_path):
 
     for idx, (lower, upper) in enumerate(ranges):
         # Filter dataframes based on sentence length
-        h_filtered = h_df[(h_df['sentence_length'] >= lower) & (h_df['sentence_length'] < upper)]
-        m_filtered = m_df[(m_df['sentence_length'] >= lower) & (m_df['sentence_length'] < upper)]
+        h_filtered = h_df[(h_df['length'] >= lower) & (h_df['length'] < upper)]
+        m_filtered = m_df[(m_df['length'] >= lower) & (m_df['length'] < upper)]
 
         # Compute histogram bins
         bins = np.linspace(
