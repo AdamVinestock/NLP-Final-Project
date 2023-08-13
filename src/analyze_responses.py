@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.metrics import roc_curve, auc
 
 def calc_mean_ppx_instance(human_responses, machine_responses):
     """
@@ -48,6 +49,30 @@ def extract_info_from_path(path):
     model = name_parts[2].replace('-',' ').capitalize()
     context_policy = name_parts[3].replace('-', ' ').capitalize()
     return dataset_name, author, model, context_policy
+
+
+def plot_roc_auc(human_responses, machine_responses):
+    # Prepare labels: 1 for human, 0 for machine
+    labels = np.concatenate([np.ones_like(human_responses), np.zeros_like(machine_responses)])
+
+    # Concatenate the responses
+    responses = np.concatenate([human_responses['response'], machine_responses['response']])
+
+    # Compute ROC curve
+    fpr, tpr, _ = roc_curve(labels, responses)
+    roc_auc = auc(fpr, tpr)
+
+    # Plot the ROC curve
+    plt.figure(figsize=(8, 6))
+    plt.plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc:.2f})')
+    plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')  # Diagonal line
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('Receiver Operating Characteristic (ROC) Curve')
+    plt.legend(loc='lower right')
+    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+    plt.tight_layout()
+    plt.show()
 
 def create_hist(human_path, machine_path):
     """
