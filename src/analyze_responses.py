@@ -51,20 +51,36 @@ def extract_info_from_path(path):
     return dataset_name, author, model, context_policy
 
 
+def compute_roc_values(human_df, machine_df):
+    """
+    input: human_df, machine_df holding response values
+    :return: ROC values
+    """
+    labels = np.concatenate([np.ones(len(human_df)), np.zeros(len(machine_df))])
+    responses = np.concatenate([human_df['response'], machine_df['response']])
+
+    # Handle NaN values
+    nan_mask = np.isnan(responses)
+    labels = labels[~nan_mask]
+    responses = responses[~nan_mask]
+
+    fpr, tpr, _ = roc_curve(labels, responses)
+    roc_auc = auc(fpr, tpr)
+
+    return fpr, tpr, roc_auc
+
+
 def plot_roc_auc(human_path, machine_path):
     h_df = pd.read_csv(human_path)
     m_df = pd.read_csv(machine_path)
     # Prepare labels: 1 for human, 0 for machine
     labels = np.concatenate([np.ones(len(h_df)), np.zeros(len(m_df))])
-    print(f"shape of labels: {labels.shape}")
 
     # Concatenate the responses
     responses = np.concatenate([h_df['response'], m_df['response']])
-    print(f"shape of responses: {responses.shape}")
 
     # Handle NaN values
     nan_mask = np.isnan(responses)
-    print(f"Number of NaN values in responses: {np.sum(nan_mask)}")
     labels = labels[~nan_mask]
     responses = responses[~nan_mask]
 
@@ -116,23 +132,42 @@ def compare_hist(human_path1, machine_path1, human_path2, machine_path2):
     dataset_name1, author1, model1, context_policy1 = extract_info_from_path(human_path1)
     _, _, _, context_policy2 = extract_info_from_path(human_path2)
 
-    fig, axs = plt.subplots(1, 2, figsize=(12, 5))
+    # Compute ROC values for each dataset
+    fpr1, tpr1, roc_auc1 = compute_roc_values(h_df1, m_df1)
+    fpr2, tpr2, roc_auc2 = compute_roc_values(h_df2, m_df2)
+
+    fig, axs = plt.subplots(2, 2, figsize=(12, 10))
     bins = np.arange(min(h_df1["response"].min(), m_df1["response"].min(),h_df2["response"].min(), m_df2["response"].min()),
                 max(h_df1["response"].max(), m_df1["response"].max(), h_df2["response"].max(), m_df2["response"].max()),
                      0.1)
-    axs[0].hist(h_df1["response"], bins=bins, alpha=0.5, label='human text')
-    axs[0].hist(m_df1["response"], bins=bins, alpha=0.5, label='machine text')
-    axs[0].set_title(f"Context policy - {context_policy1}")
-    axs[0].set_xlabel('Log-perplexity')
-    axs[0].set_ylabel('Frequency')
-    axs[0].legend()
+    axs[0, 0].hist(h_df1["response"], bins=bins, alpha=0.5, label='human text')
+    axs[0, 0].hist(m_df1["response"], bins=bins, alpha=0.5, label='machine text')
+    axs[0, 0].set_title(f"Context policy - {context_policy1}")
+    axs[0, 0].set_xlabel('Log-perplexity')
+    axs[0, 0].set_ylabel('Frequency')
+    axs[0, 0].legend()
 
-    axs[1].hist(h_df2["response"], bins=bins, alpha=0.5, label='human text')
-    axs[1].hist(m_df2["response"], bins=bins, alpha=0.5, label='machine text')
-    axs[1].set_title(f"Context policy - {context_policy2}")
-    axs[1].set_xlabel('Log-perplexity')
-    axs[1].set_ylabel('Frequency')
-    axs[1].legend()
+    axs[0, 1].hist(h_df2["response"], bins=bins, alpha=0.5, label='human text')
+    axs[0, 1].hist(m_df2["response"], bins=bins, alpha=0.5, label='machine text')
+    axs[0, 1].set_title(f"Context policy - {context_policy2}")
+    axs[0, 1].set_xlabel('Log-perplexity')
+    axs[0, 1].set_ylabel('Frequency')
+    axs[0, 1].legend()
+
+    # Plot the ROC curves using the computed values
+    axs[1, 0].plot(fpr1, tpr1, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc1:.2f})')
+    axs[1, 0].plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    axs[1, 0].set_xlabel('False Positive Rate')
+    axs[1, 0].set_ylabel('True Positive Rate')
+    axs[1, 0].legend(loc='lower right')
+    axs[1, 0].grid(True, which='both', linestyle='--', linewidth=0.5)
+
+    axs[1, 1].plot(fpr2, tpr2, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc2:.2f})')
+    axs[1, 1].plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+    axs[1, 1].set_xlabel('False Positive Rate')
+    axs[1, 1].set_ylabel('True Positive Rate')
+    axs[1, 1].legend(loc='lower right')
+    axs[1, 1].grid(True, which='both', linestyle='--', linewidth=0.5)
 
     plt.suptitle(f"Dataset - {dataset_name1}", fontsize=16)
     plt.tight_layout()
