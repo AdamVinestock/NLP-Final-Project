@@ -54,7 +54,11 @@ def extract_info_from_path(path):
 def compute_roc_values(human_df, machine_df):
     """
     input: human_df, machine_df holding response values
-    :return: ROC values
+    :return: ROC values where labels are 1 for human and 0 for machine, threshold is perplexity value and
+    TP are all human responses with perplexity value above threshold
+    FP are all machine responses with perplexity value above threshold
+    TN are all machine responses with perplexity value below threshold
+    FN are all human responses with perplexity value below threshold
     """
     labels = np.concatenate([np.ones(len(human_df)), np.zeros(len(machine_df))])
     responses = np.concatenate([human_df['response'], machine_df['response']])
