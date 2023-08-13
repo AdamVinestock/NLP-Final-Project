@@ -51,9 +51,11 @@ def extract_info_from_path(path):
     return dataset_name, author, model, context_policy
 
 
-def plot_roc_auc(human_responses, machine_responses):
+def plot_roc_auc(human_path, machine_path):
+    h_df = pd.read_csv(human_path)
+    m_df = pd.read_csv(machine_path)
     # Prepare labels: 1 for human, 0 for machine
-    labels = np.concatenate([np.ones_like(human_responses), np.zeros_like(machine_responses)])
+    labels = np.concatenate([np.ones_like(h_df), np.zeros_like(m_df)])
 
     # Concatenate the responses
     responses = np.concatenate([human_responses['response'], machine_responses['response']])
