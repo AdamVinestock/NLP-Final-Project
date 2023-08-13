@@ -235,7 +235,7 @@ def calc_diff(human_path, machine_path):
 def prepare_results(human_path_base, machine_path_base, human_path, machine_path):
     """
     input: paths of human and machine csv's holding responses for each sentence in a particular dataset for no-context (baseline) and a chosen context policy
-    output: list of response results containing: [mean_diff, mean human no context, mean human with context, mean machine no context, mean machine with context]
+    output: list of response results containing: [human mean response, machine mean response, human-machine perplexity difference, roc auc]
     """
     h_df, m_df = pd.read_csv(human_path), pd.read_csv(machine_path)
     h_mean, m_mean = h_df["response"].mean(), m_df["response"].mean()
@@ -249,7 +249,9 @@ def prepare_results(human_path_base, machine_path_base, human_path, machine_path
     else:
         diff_from_base = "0"
 
-    return [h_mean, m_mean, diff, diff_from_base]
+    _, _, roc_auc = compute_roc_values(h_df, m_df)
+
+    return [h_mean, m_mean, diff, diff_from_base, roc_auc]
 
 
 
