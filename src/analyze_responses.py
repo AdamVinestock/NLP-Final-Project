@@ -55,7 +55,7 @@ def plot_roc_auc(human_path, machine_path):
     h_df = pd.read_csv(human_path)
     m_df = pd.read_csv(machine_path)
     # Prepare labels: 1 for human, 0 for machine
-    labels = np.concatenate([np.ones_like(h_df), np.zeros_like(m_df)])
+    labels = np.concatenate([np.ones_like(h_df[:,1]), np.zeros_like(m_df[:,1])])
     print(f"shape of label: {labels.shape}")
 
     # Concatenate the responses
