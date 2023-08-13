@@ -260,6 +260,7 @@ def sen_length_separation(human_path, machine_path):
     """
     h_df = pd.read_csv(human_path)
     m_df = pd.read_csv(machine_path)
+    dataset_name, author1, model, context_policy = extract_info_from_path(human_path)
 
     # Define ranges for sentence lengths
     ranges = [(0, 20), (20, 40), (40, float('inf'))]
@@ -277,13 +278,6 @@ def sen_length_separation(human_path, machine_path):
         # Filter dataframes based on sentence length
         h_filtered = h_df[(h_df['length'] >= lower) & (h_df['length'] < upper)]
         m_filtered = m_df[(m_df['length'] >= lower) & (m_df['length'] < upper)]
-
-        # # Compute histogram bins
-        # bins = np.linspace(
-        #     min(h_filtered['response'].min(), m_filtered['response'].min()),
-        #     max(h_filtered['response'].max(), m_filtered['response'].max()),
-        #     0.1
-        # )
 
         # Plot histogram
         axs[idx, 0].hist(h_filtered['response'], bins=bins, alpha=0.5, label='human text')
@@ -304,6 +298,7 @@ def sen_length_separation(human_path, machine_path):
         axs[idx, 1].legend(loc='lower right')
         axs[idx, 1].grid(True, which='both', linestyle='--', linewidth=0.5)
 
+    plt.suptitle(f"Data set {dataset_name} with Context Policy {context_policy}", fontsize=16)
     plt.tight_layout()
     plt.show()
 
