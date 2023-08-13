@@ -267,9 +267,9 @@ def sen_length_separation(human_path, machine_path):
     fig, axs = plt.subplots(3, 2, figsize=(12, 15))
 
     # Compute histogram bins
-    bins = np.linspace(
+    bins = np.arange(
         min(h_df['response'].min(), m_df['response'].min()),
-        max(h_df['response'].max(), m_df['response'].max()),
+        max(h_df['response'].max(), m_df['response'].max()) + 0.1,  # Added 0.1 to ensure the max value is included
         0.1
     )
 
