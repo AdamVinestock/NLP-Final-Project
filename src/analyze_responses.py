@@ -166,7 +166,7 @@ def compare_hist(human_path1, machine_path1, human_path2, machine_path2):
     axs[1, 0].legend(loc='lower right')
     axs[1, 0].grid(True, which='both', linestyle='--', linewidth=0.5)
 
-    axs[1, 1].plot(fpr2, tpr2, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc2:.2f})')
+    axs[1, 1].plot(fpr2, tpr2, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc2:.4f})')
     axs[1, 1].plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
     axs[1, 1].set_xlabel('False Positive Rate')
     axs[1, 1].set_ylabel('True Positive Rate')
