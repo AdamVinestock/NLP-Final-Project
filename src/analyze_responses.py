@@ -159,7 +159,7 @@ def compare_hist(human_path1, machine_path1, human_path2, machine_path2):
     axs[0, 1].legend()
 
     # Plot the ROC curves using the computed values
-    axs[1, 0].plot(fpr1, tpr1, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc1:.2f})')
+    axs[1, 0].plot(fpr1, tpr1, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc1:.4f})')
     axs[1, 0].plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
     axs[1, 0].set_xlabel('False Positive Rate')
     axs[1, 0].set_ylabel('True Positive Rate')
