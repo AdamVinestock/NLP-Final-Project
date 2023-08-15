@@ -295,7 +295,7 @@ def sen_length_separation(human_path, machine_path):
         fpr, tpr, roc_auc = compute_roc_values(h_filtered, m_filtered)
 
         # Plot ROC curve
-        axs[idx, 1].plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc:.2f})')
+        axs[idx, 1].plot(fpr, tpr, color='darkorange', lw=2, label=f'ROC curve (area = {roc_auc:.4f})')
         axs[idx, 1].plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
         axs[idx, 1].set_xlabel('False Positive Rate')
         axs[idx, 1].set_ylabel('True Positive Rate')
