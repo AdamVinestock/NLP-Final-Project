@@ -245,7 +245,7 @@ def prepare_results(human_path_base, machine_path_base, human_path, machine_path
     h_mean, m_mean = h_df["response"].mean(), m_df["response"].mean()
     diff = calc_diff(human_path, machine_path)
     base_diff = calc_diff(human_path_base, machine_path_base)
-    diff_from_base = diff - base_diff
+    diff_from_base = round((diff - base_diff),4)
     if diff_from_base > 0:
         diff_from_base = f"+ {diff_from_base} ↑"
     elif diff_from_base < 0:
